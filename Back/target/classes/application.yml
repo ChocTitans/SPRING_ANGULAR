@@ -1,0 +1,31 @@
+#  postgres :
+  # docker run -p 5432:5432 --restart unless-stopped -d --name postgres -e POSTGRES_PASSWORD=postgrespw -e POSTGRES_USER=postgres -e POSTGRES_DB=cliniquesolis postgres
+    # when image is installed : docker start postgres
+#  PgAdmin4 :
+  # docker run -p 5050:80 --restart unless-stopped -e -d --name pgadmin4 dpage/pgadmin4 'PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org' -e 'PGADMIN_DEFAULT_PASSWORD=admin'
+    # when image is installed : docker start pgadmin4
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:postgresql://horton.db.elephantsql.com:5432/qwbsogxc
+    username: qwbsogxc
+    password: 5qlmwDfExUpnRkkSOdfMP0_wX0o6g88g
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+application:
+  security:
+    jwt:
+      secret-key: 576E5A7234753778214125442A472D4B6150645367556B58703273357638792F
+      expiration: 86400000 # a day # 3600000 # 1 hour
+      refresh-token:
+        expiration: 604800000 # 7 days

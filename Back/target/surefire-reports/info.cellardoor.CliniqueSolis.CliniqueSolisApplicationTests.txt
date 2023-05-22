@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: info.cellardoor.CliniqueSolis.CliniqueSolisApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.919 s - in info.cellardoor.CliniqueSolis.CliniqueSolisApplicationTests
