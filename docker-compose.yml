@@ -1,37 +1,17 @@
-version: '3.8'
+version: '3'
 services:
-  db:
-    image: postgres
-    environment:
-      POSTGRES_USER: qwbsogxc
-      POSTGRES_PASSWORD: 5qlmwDfExUpnRkkSOdfMP0_wX0o6g88g
-      POSTGRES_DB: qwbsogxc
+  backend:
+    build:
+      context: ./Back
+      dockerfile: Dockerfile
     ports:
-      - "5432:5432"
-    networks:
-      - webnet
+      - 8080:8080
 
-  spring:
-    build: ./Back
+  frontend:
+    build:
+      context: ./Front
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - 4200:4200
     depends_on:
-      - db
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db/qwbsogxc
-      SPRING_DATASOURCE_USERNAME: qwbsogxc
-      SPRING_DATASOURCE_PASSWORD: 5qlmwDfExUpnRkkSOdfMP0_wX0o6g88g
-    networks:
-      - webnet
-
-  angular:
-    build: ./Front
-    ports:
-      - "4200:4200"
-    depends_on:
-      - spring
-    networks:
-      - webnet
-
-networks:
-  webnet:
+      - backend

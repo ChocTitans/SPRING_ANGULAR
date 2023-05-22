@@ -1,32 +1,32 @@
-# Start with a base image containing Node.js runtime
-FROM node:alpine AS build
+# Base image
+FROM node:alpine as builder
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files to the container
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install the dependencies
+# Install dependencies
 RUN npm install
 
-# Copy the entire Angular project to the container 
+# Copy the project files
 COPY . .
 
-# Build the Angular app for production
+# Build the Angular app
 RUN npm run build --prod
 
-# Now, create another lightweight Nginx image to serve the angular build artifact
-FROM nginx:alpine
+# Stage 2: Use a lighter base image
+FROM node:14-alpine
 
-# Remove the default Nginx website
-RUN rm -rf /usr/share/nginx/html/*
+# Set the working directory
+WORKDIR /app
 
-# Copy the build output from the previous stage to the Nginx web root directory
-COPY --from=build /app/dist/front /usr/share/nginx/html
+# Copy the build artifacts from the previous stage
+COPY --from=builder /app/dist /app/dist
 
-# Expose port 80 of the container to the host machine
-EXPOSE 80
+# Expose port 4200
+EXPOSE 4200
 
-# Start Nginx in foreground mode when the container starts
-CMD ["nginx", "-g", "daemon off;"]
+# Serve the Angular app using a simple Node.js HTTP server
+CMD ["npx", "http-server", "-p", "4200", "/app/dist"]
